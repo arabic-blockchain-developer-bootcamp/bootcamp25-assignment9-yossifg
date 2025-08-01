@@ -12,7 +12,7 @@ contract Assignment9Test is Test {
     }
 
     function testFactoryPattern() public {
-        assignment.createContract();
+        assignment.createContract(42); // ✅ تمرير قيمة ابتدائية
         address deployed = assignment.deployedContracts(0);
 
         SimpleContract simple = SimpleContract(deployed);
@@ -23,8 +23,8 @@ contract Assignment9Test is Test {
     }
 
     function testOnlyOwnerCanCreateContract() public {
-        vm.prank(address(0x1234));
-        vm.expectRevert();
-        assignment.createContract();
+        vm.prank(address(0x1234));       // انتحال عنوان غير المالك
+        vm.expectRevert();               // نتوقع revert بسبب onlyOwner
+        assignment.createContract(1);    // ✅ تمرير أي قيمة عددية
     }
 }
